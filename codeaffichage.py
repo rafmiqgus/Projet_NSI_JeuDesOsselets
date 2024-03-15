@@ -35,18 +35,7 @@ def choixnom():
         b = str(input("j1"))
     return (a,b)
 
-
-
-
-def duel():
-    j1 = [[0,0,0],[0,0,0],[0,0,0]]
-    j2 = [[0,0,0],[0,0,0],[0,0,0]]
-    print("Bienvenue ! Vous avez choisi le mode duel (1 contre 1).")
-    p = choixnom()
-    print("Au tour de" ,p[0], " .")
-    roll = de()
-    print("Vous avez eu un " , roll, " .")
-    placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+def placementj1(j1,placement,roll):
     if placement == 1:
         if j1[0][0] == 0:
             j1[0][0]  = roll
@@ -68,7 +57,31 @@ def duel():
             j1[2][1]  = roll
         elif j1[2][2] == 0 and j1[2][1] != 0 and j1[2][0] != 0:
             j1[2][1]  = roll
-    affichage(p,roll,0,j1,j2)
+    return j1
+    
+
+
+
+
+def duel():
+    j1 = [[0,0,0],[0,0,0],[0,0,0]]
+    j2 = [[0,0,0],[0,0,0],[0,0,0]]
+    win = False
+    print("Bienvenue ! Vous avez choisi le mode duel (1 contre 1).")
+    p = choixnom()
+    while not win : 
+        print("Au tour de" ,p[0], " .")
+        roll = de()
+        print("Vous avez eu un " , roll, " .")
+        placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+        j1  = placementj1(j1,placement,roll)
+        affichage(p,roll,0,j1,j2)
+        print("Au tour de" ,p[1], " .")
+        roll = de()
+        print("Vous avez eu un " , roll, " .")
+        placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+        j2  = placementj1(j2,placement,roll)
+        affichage(p,roll,0,j1,j2)
 
 
 
