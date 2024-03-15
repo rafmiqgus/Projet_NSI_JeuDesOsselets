@@ -1,8 +1,8 @@
 import pygame 
 
 pygame.init()
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Jeu des Osselets")
 clock = pygame.time.Clock()
@@ -19,19 +19,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         
-    keys = pygame.key.get_pressed()
-
-    if (keys[pygame.K_LEFT] or keys[pygame.K_q]) and x > 0:
-        x -= vel
-    if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and x < SCREEN_WIDTH - width:
-        x += vel
-    if (keys[pygame.K_UP] or keys[pygame.K_z]) and y > 0:
-        y -= vel
-    if (keys[pygame.K_DOWN] or keys[pygame.K_s]) and y < SCREEN_HEIGHT - height:
-        y += vel
+    pygame
 
     screen.fill("white")
-    pygame.draw.rect(screen, (0, 255, 0), (x, y, width, height))
 
     pygame.display.flip()
     clock.tick(60)
