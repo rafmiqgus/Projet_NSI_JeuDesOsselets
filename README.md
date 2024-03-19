@@ -1,3 +1,3 @@
 # Projet_NSI_JeuDesOsselets
 
-Projet de NSI par Jules, Florian, Ryan et Rafael.
+Projet de NSI par Jules, Florian, Fares et Rafael.
