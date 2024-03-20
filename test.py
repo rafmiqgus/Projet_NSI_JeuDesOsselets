@@ -6,7 +6,7 @@ init_display()
 running = True
 clock = pygame.time.Clock()
 
-add_dé(6, 2, 2, "hibou")
+lancer_dé()
 
 while running:
     for event in pygame.event.get():
@@ -17,8 +17,3 @@ while running:
     clock.tick(60)
 
 pygame.quit()
-
-fonts = pygame.font.get_fonts()
-print(len(fonts))
-for font in fonts:
-    print(font)
