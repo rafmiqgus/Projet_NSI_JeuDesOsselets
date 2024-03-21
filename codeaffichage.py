@@ -50,9 +50,6 @@ def placementj1(j1,j2,placement,roll):
     while j1[placement-1][2] != 0:
         print("colonne remplie ! choisissez en une autre.")
         placement = int(input("Quelle colonne voulez vous choisir ?"))
-    while placement not in [1,2,3]:
-        print("Cet entrée n'est pas valide. Entrez 1,2 ou 3.")
-        placement = int(input("Quelle colonne voulez vous choisir ?"))
     if placement == 1:
         if j1[0][0] == 0:
             j1[0][0]  = roll
@@ -101,7 +98,6 @@ def sumdes(des):
                 occ.append(i)
             elif i in occ :
                 nbr = i 
-        print(occ)
         if occ == []:
             sum = 0
         elif len(occ) == 1:
@@ -118,6 +114,13 @@ def sumdes(des):
     
     return result
 
+def verifplacement():
+    placement = input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?")
+    while placement not in ["1","2","3"]:
+        print("Cet entrée n'est pas valide. Entrez 1,2 ou 3.")
+        placement = input("Quelle colonne voulez vous choisir ?")
+    return int(placement)
+
 
 def duel():
     j1 = [[0,0,0],[0,0,0],[0,0,0]]
@@ -129,7 +132,7 @@ def duel():
         print("Au tour de" ,p[0], " .")
         roll = de()
         print("Vous avez eu un " , roll, " .")
-        placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+        placement = verifplacement()
         a = placementj1(j1,j2,placement,roll)
         j1 = a[0]
         j2 = a[1]
@@ -139,7 +142,7 @@ def duel():
         print("Au tour de" ,p[1], " .")
         roll = de()
         print("Vous avez eu un " , roll, " .")
-        placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+        placement = verifplacement()
         a = placementj1(j2,j1,placement,roll)
         j2 = a[0]
         j1 = a[1]
