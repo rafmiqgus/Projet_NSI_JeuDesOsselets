@@ -90,25 +90,32 @@ def checkover(j1,j2):
     elif j2[0][2] != 0 and j2[1][2] != 0 and j2[2][2] != 0:
         over = True
     return over
-def sum(des):
+def sumdes(des):
     result = []
-    
     for k in des:
         sum = 0
         occ = []
+        nbr = 0
         for i in k: 
             if i not in occ : 
                 occ.append(i)
             elif i in occ :
                 nbr = i 
-        if len(occ) == 1:
+        print(occ)
+        if occ == []:
+            sum = 0
+        elif len(occ) == 1:
             sum = nbr**3
         elif len(occ) == 2:
             if nbr == occ[0]:
                 sum = occ[0]**2 + occ[1]
             elif nbr == occ[1]:
                 sum = occ[1]**2 + occ[0]
+        else:
+            sum = k[0] + k[1] + k[2]
         result.append(sum)
+        
+    
     return result
 
 
@@ -128,7 +135,7 @@ def duel():
         j2 = a[1]
         if checkover(j1,j2):
             win = True
-        affichage(p,roll,0,j1,j2,sum(j1),sum(j2))
+        affichage(p,roll,0,j1,j2,sumdes(j1),sumdes(j2))
         print("Au tour de" ,p[1], " .")
         roll = de()
         print("Vous avez eu un " , roll, " .")
@@ -138,7 +145,7 @@ def duel():
         j1 = a[1]
         if checkover(j2,j1):
             win = True
-        affichage(p,0,roll,j1,j2,sum(j1),sum(j2))
+        affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
     print("Jeu terminé.")
         
 duel()
