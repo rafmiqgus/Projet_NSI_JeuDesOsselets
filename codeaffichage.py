@@ -105,12 +105,12 @@ def sumdes(des):
         if occ == []:
             sum = 0
         elif len(occ) == 1:
-            sum = nbr**3
+            sum = nbr * 9
         elif len(occ) == 2:
             if nbr == occ[0]:
-                sum = occ[0]**2 + occ[1]
+                sum = occ[0]*4 + occ[1]
             elif nbr == occ[1]:
-                sum = occ[1]**2 + occ[0]
+                sum = occ[1]*4 + occ[0]
         else:
             sum = k[0] + k[1] + k[2]
         result.append(sum)
@@ -147,6 +147,10 @@ def duel():
             win = True
         affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
     print("Jeu terminé.")
+    somme1 = sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]  
+    somme2 = sumdes(j2)[0] + sumdes(j2)[1] + sumdes(j2)[2]  
+    print("Score final de ",p[0]," : ", somme1)
+    print("Score final de ",p[1]," : ", somme2)
         
 duel()
     
