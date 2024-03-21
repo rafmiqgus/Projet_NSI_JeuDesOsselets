@@ -99,13 +99,29 @@ def lancer_dé(joueur):
             pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
             for i in range(4):
                 pygame.draw.rect(screen, (139, 69, 19), (35-i,300-i,345,195), 3)
-            screen.blit(pygame.transform.scale_by(image, 0.2), (140, 340))
+            screen.blit(pygame.transform.scale_by(image, 0.2), (153, 343))
 
-        if joueur == "joueur_2":
+        elif joueur == "joueur_2":
             pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
             for i in range(4):
                 pygame.draw.rect(screen, (139, 69, 19), (810-i,300-i,345,195), 3)
-            screen.blit(pygame.transform.scale_by(image, 0.2), (300, 100))
+            screen.blit(pygame.transform.scale_by(image, 0.2), (930, 340))
+
+        face_random = random.randint(1, 6)
+        image = pygame.image.load(f"images/dé_{face_random}.png")
         
+        if joueur == "joueur_1":
+            pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
+            for i in range(4):
+                pygame.draw.rect(screen, (139, 69, 19), (35-i,300-i,345,195), 3)
+            screen.blit(pygame.transform.scale_by(image, 0.2), (153, 343))
+
+        elif joueur == "joueur_2":
+            pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
+            for i in range(4):
+                pygame.draw.rect(screen, (139, 69, 19), (810-i,300-i,345,195), 3)
+            screen.blit(pygame.transform.scale_by(image, 0.2), (930, 340))
         pygame.display.update()
+
+        return face_random
         
