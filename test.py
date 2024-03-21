@@ -1,7 +1,7 @@
 import pygame 
 from affichage import *
 
-init_display("rafael", "justin")
+init_display("rafael", "basile")
 
 running = True
 clock = pygame.time.Clock()
@@ -17,6 +17,3 @@ while running:
     clock.tick(60)
 
 pygame.quit()
-
-for font in pygame.font.get_fonts():
-    print(font)
