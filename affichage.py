@@ -9,6 +9,7 @@ pygame.display.set_caption("Jeu des Osselets")
 
 def init_display(joueur_1, joueur_2):
     """Fonction servant à initialiser l'affichage du jeu"""
+    global rectangle_goblin, rectangle_guerrier
 
     screen.fill((245, 245, 220))
 
@@ -22,17 +23,17 @@ def init_display(joueur_1, joueur_2):
     image_joueur_2 = pygame.image.load("images/guerrier.png")
     screen.blit(pygame.transform.scale_by(image_joueur_2, 0.4), (875.2, 30))
 
-    font = pygame.font.SysFont("rubikbold", 30)
-    nom_joueur_1 = font.render(joueur_1, True, (80, 227, 194))
-    screen.blit(nom_joueur_1, (138, 690))
-    nom_joueur_2 = font.render(joueur_2, True, (184, 233, 134))
-    screen.blit(nom_joueur_2, (935, 250))
+    font = pygame.font.SysFont("Gabriola", 40)
+    nom_joueur_1 = font.render(joueur_1, True, "black")
+    screen.blit(nom_joueur_1, (165, 685))
+    nom_joueur_2 = font.render(joueur_2, True, "black")
+    screen.blit(nom_joueur_2, (935, 245))
 
-    rectangle_blaireau = pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
+    rectangle_goblin = pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
     for i in range(4):
         pygame.draw.rect(screen, (139, 69, 19), (35-i,300-i,345,195), 3)
 
-    rectangle_hibou = pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
+    rectangle_guerrier = pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
     for i in range(4):
         pygame.draw.rect(screen, (139, 69, 19), (810-i,300-i,345,195), 3)
 
@@ -80,15 +81,31 @@ def add_dé(face_dé, x, y, joueur):
         elif x == 3 and y == 3:
             screen.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (665, 678))
 
-def lancer_dé():
+def lancer_dé(joueur):
     """Fonction servant à charger l'animation de lancé de dé"""
 
+    clock = pygame.time.Clock()
     frames = [pygame.image.load(f"images/dé_{i}.png") for i in [4, 2, 5, 1, 6, 3, 5]]
+    frame = 0
 
-    duration = 2 
-    fps = 10
-    frame_count = len(frames)
-    total_frames = duration * fps
+    for frame in range(len(frames)):
+        clock.tick(10)
+        if frame >= len(frames):
+            frame = 0
 
-    for frame in range(total_frames):
-        frame_index = frame % frame_count
+        image = frames[frame]
+
+        if joueur == "joueur_1":
+            pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
+            for i in range(4):
+                pygame.draw.rect(screen, (139, 69, 19), (35-i,300-i,345,195), 3)
+            screen.blit(pygame.transform.scale_by(image, 0.2), (140, 340))
+
+        if joueur == "joueur_2":
+            pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
+            for i in range(4):
+                pygame.draw.rect(screen, (139, 69, 19), (810-i,300-i,345,195), 3)
+            screen.blit(pygame.transform.scale_by(image, 0.2), (300, 100))
+        
+        pygame.display.update()
+        
