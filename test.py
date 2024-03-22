@@ -1,12 +1,12 @@
 import pygame 
 from affichage import *
 
-init_display("rafael", "basile")
+init_display(("rafael", "basile"))
 
 running = True
 clock = pygame.time.Clock()
 
-lancer_dé("joueur_1")
+add_dé(lancer_dé("joueur_1"), 1, 3, "joueur_1")
 
 while running:
     for event in pygame.event.get():

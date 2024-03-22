@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 pygame.init()
 SCREEN_WIDTH = 1200
@@ -7,9 +8,11 @@ SCREEN_HEIGHT = 800
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Jeu des Osselets")
 
-def init_display(joueur_1, joueur_2):
+def init_display(joueurs):
     """Fonction servant à initialiser l'affichage du jeu"""
     global rectangle_goblin, rectangle_guerrier
+
+    joueur_1, joueur_2 = joueurs
 
     screen.fill((245, 245, 220))
 
@@ -33,11 +36,11 @@ def init_display(joueur_1, joueur_2):
     nom_joueur_2_x = 1150 - nom_joueur_2_width
     screen.blit(nom_joueur_2, (nom_joueur_2_x, 260))
 
-    rectangle_goblin = pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
+    case_joueur_1 = pygame.draw.rect(screen, (31, 142, 77), (35,300,340,190), 0)
     for i in range(4):
         pygame.draw.rect(screen, (139, 69, 19), (35-i,300-i,345,195), 3)
 
-    rectangle_guerrier = pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
+    case_joueur_2 = pygame.draw.rect(screen, (31, 142, 77), (810,300,340,190), 0)
     for i in range(4):
         pygame.draw.rect(screen, (139, 69, 19), (810-i,300-i,345,195), 3)
     
@@ -49,7 +52,7 @@ def add_dé(face_dé, x, y, joueur):
 
     dé = "images/dé_" + str(face_dé) + ".png"
     
-    if joueur == "hibou":
+    if joueur == "joueur_2":
         if x == 1 and y == 1:
             screen.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (420, 65))
         elif x == 2 and y == 1:
@@ -68,7 +71,7 @@ def add_dé(face_dé, x, y, joueur):
             screen.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (540, 250))
         elif x == 3 and y == 3:
             screen.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (665, 250))
-    elif joueur == "blaireau":
+    elif joueur == "joueur_1":
         if x == 1 and y == 1:
             screen.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (420, 495))
         elif x == 2 and y == 1:
@@ -130,4 +133,6 @@ def lancer_dé(joueur):
             screen.blit(pygame.transform.scale_by(image, 0.2), (930, 340))
 
         pygame.display.update()
+
+    return face_random
         
