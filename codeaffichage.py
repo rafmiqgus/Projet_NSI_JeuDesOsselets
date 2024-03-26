@@ -246,3 +246,46 @@ def choixdianthea(j1,bot,roll):
             col = random.randint(1,3)
     return col
     
+def verif_rempli(j1):
+    a = random.randint(1,3)
+    while j1[a-1][2] != 0:
+        a = random.randint(1,3)
+    return a
+
+def bot_tarak():
+    j1 = [[0,0,0],[0,0,0],[0,0,0]]
+    j2 = [[0,0,0],[0,0,0],[0,0,0]]
+    win = False
+    print("Bienvenue ! Vous avez choisi le mode bot Tarak.")
+    a = input("Entrez votre nom!")
+    p = (a,"Tarak")
+    while not win :
+        print("Au tour de" ,p[0], " .")
+        roll = de()
+        print("Vous avez eu un " , roll, " .")
+        placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+        a = placementj1(j1,j2,placement,roll)
+        j1 = a[0]
+        j2 = a[1]
+        if checkover(j1,j2):
+            win = True
+        affichage(p,roll,0,j1,j2,sumdes(j1),sumdes(j2))
+        print("Au tour du bot tarak .")
+        time.sleep(1)
+        roll = de()
+        print("Bot tarak a eu un " , roll, " .")
+        time.sleep(1)
+        placement = verif_rempli(j1)
+        a = placementj1(j2,j1,placement,roll)
+        j2 = a[0]
+        j1 = a[1]
+        if checkover(j2,j1):
+            win = True
+        affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
+    print("Jeu terminé.")
+    somme1 = sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]
+    somme2 = sumdes(j2)[0] + sumdes(j2)[1] + sumdes(j2)[2]
+    print("Score final de ",p[0]," : ", somme1)
+    print("Score final de bot tarak : ", somme2)
+
+bot_tarak()
