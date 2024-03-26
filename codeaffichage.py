@@ -1,4 +1,4 @@
-import random
+import random, time
 def de():
     return random.randint(1,6)
 
@@ -43,9 +43,23 @@ def choixnom():
 def check(desj1,desj2,colonne):
     a = False
     for k in desj1[colonne-1]:
-        if k in desj2[colonne-1]:
+        if k in desj2[colonne-1] and k != 0:
             a = True 
     return a 
+def precheck(j1,j2,colonne,roll):
+    a = False
+    if roll in j2[colonne-1] and j1[colonne-1][2] == 0:
+        a = True 
+    return a 
+def enleverdes(j2,placement,roll):
+    nt = []
+    for i in j2[placement-1]:
+        if i != roll:
+            nt.append(i)
+    while len(nt)  < 3:
+        nt.append(0)
+    j2[placement-1] = nt
+    return j2
 def placementj1(j1,j2,placement,roll):
     while j1[placement-1][2] != 0:
         print("colonne remplie ! choisissez en une autre.")
@@ -71,15 +85,10 @@ def placementj1(j1,j2,placement,roll):
             j1[2][1]  = roll
         elif j1[2][2] == 0 and j1[2][1] != 0 and j1[2][0] != 0:
             j1[2][2]  = roll
-    if check(j1,j2,placement):
-        nt = []
-        for i in j2[placement-1]:
-            if i != roll:
-                nt.append(i)
-        while len(nt)  < 3:
-            nt.append(0)
-        j2[placement-1] = nt
+    j2 = enleverdes(j2,placement,roll)
+
     return (j1,j2)
+
 def checkover(j1,j2):
     over = False
     if j1[0][2] != 0 and j1[1][2] != 0 and j1[2][2] != 0:
@@ -155,9 +164,85 @@ def duel():
     print("Score final de ",p[0]," : ", somme1)
     print("Score final de ",p[1]," : ", somme2)
         
-duel()
     
 
 
 
+def dianthea():
+    j1 = [[0,0,0],[0,0,0],[0,0,0]]
+    bot = [[0,0,0],[0,0,0],[0,0,0]]
+    win = False
+    print("Bienvenue ! Vous avez choisi le mode duel contre le bot dianthéa.")
+    nom = input("Quel est votre nom ? ")
+    p = (nom,"Dianthéa")
+    while not win : 
+        print("Au tour de" ,p[0], " .")
+        roll = de()
+        print("Vous avez eu un " , roll, " .")
+        placement = verifplacement()
+        a = placementj1(j1,bot,placement,roll)
+        j1 = a[0]
+        bot = a[1]
+        if checkover(j1,bot):
+            win = True
+        affichage(p,roll,0,j1,bot,sumdes(j1),sumdes(bot))
+        print("Au tour de Dianthéa.")   
+        roll = de()
+        time.sleep(1)
+        print("Dianthéa a obtenu un ", roll, " .")
+        time.sleep(1)
+        placement = choixdianthea(j1,bot,roll)
+        a = placementj1(bot,j1,placement,roll)
+        bot = a[0]
+        j1 = a[1]
+        if checkover(bot,j1):
+            win = True
+        affichage(p,0,roll,j1,bot,sumdes(j1),sumdes(bot))
+    print("Jeu terminé.")
+    somme1 = sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]  
+    somme2 = sumdes(bot)[0] + sumdes(bot)[1] + sumdes(bot)[2]  
+    print("Score final de ",p[0]," : ", somme1)
+    print("Score final de ",p[1]," : ", somme2)
+
+
+def choixdianthea(j1,bot,roll):
+    temp = 0
+    n = 0
+    col = 0 
+    if precheck(bot,j1,1,roll):
+        a = sumdes(j1)[0]
+        print(a)
+        enleverdes(j1,0 ,roll)
+        b = sumdes(j1)[0]
+        print(a,b)
+        temp = a - b
+        if temp >= n:
+            n = temp
+            col = 1
+    if precheck(bot,j1,2,roll):
+        a = sumdes(j1)[1]
+        print(a)
+        enleverdes(j1,1,roll)
+        b = sumdes(j1)[1]
+        print(a,b)
+        temp = a - b
+        if temp >= n:
+            n = temp
+            col = 2
+    if precheck(bot,j1,3,roll):
+        a = sumdes(j1)[2]
+        print(a)
+        enleverdes(j1,2,roll)
+        b = sumdes(j1)[2]
+        print(a,b)
+        temp = a - b
+        if temp >= n:
+            n = temp
+            col = 3
+    
+    if precheck(bot,j1,1,roll) == False and precheck(bot,j1,2,roll) == False and precheck(bot,j1,3,roll) == False:
+        col = random.randint(1,3)
+        while bot[col-1][2] != 0:
+            col = random.randint(1,3)
+    return col
     
