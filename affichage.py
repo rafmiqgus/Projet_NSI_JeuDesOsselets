@@ -13,7 +13,7 @@ def get_font(taille):
     return pygame.font.Font("assets/font.ttf", taille)
 
 def follow_prompt():
-    """Fonction servant à afficher le prompt"""
+    """Fonction servant à afficher la page 'suivez le promp' """
 
     SCREEN.blit(pygame.image.load("assets/Background.png"), (0, 0))
 
