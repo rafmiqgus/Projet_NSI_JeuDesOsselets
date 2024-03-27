@@ -1,8 +1,6 @@
 import pygame 
 from affichage import *
 
-select_mode()
-
 running = True
 clock = pygame.time.Clock()
 
