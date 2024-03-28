@@ -125,7 +125,9 @@ def init_display(joueurs):
     SCREEN.blit(pygame.transform.scale_by(pygame.image.load("assets/carte.png"), 0.1), (5, 5))
     SCREEN.blit(pygame.transform.scale_by(pygame.image.load("assets/carte.png"), 0.1), (1143.8, 743.2))
 
-def add_de(face_dé, x, y, joueur):
+    pygame.display.update()
+
+def add_de_grille(face_dé, x, y, joueur):
     """Fonction servant à ajouter un dé sur l'affichage du jeu"""
 
     dé = "assets/dé_" + str(face_dé) + ".png"
@@ -168,8 +170,60 @@ def add_de(face_dé, x, y, joueur):
             SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (540, 678))
         elif x == 3 and y == 3:
             SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (665, 678))
+    
+    pygame.display.flip()
 
-def remove_de(joueur):
+def remove_de_grille(x, y, joueur):
+    """Fonction servant à supprimer un dé sur l'affichage du jeu"""
+    
+    rect_info = {
+        'taille' : (75, 75),
+        'couleur' : (245, 245, 220)
+    }
+
+    if joueur == "joueur_2":
+        if x == 1 and y == 1:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((420, 65), rect_info["taille"]))
+        elif x == 2 and y == 1:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((540, 65), rect_info["taille"]))
+        elif x == 3 and y == 1:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((665, 65), rect_info["taille"]))
+        elif x == 1 and y == 2:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((420, 155), rect_info["taille"]))
+        elif x == 2 and y == 2:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((540, 155), rect_info["taille"]))
+        elif x == 3 and y == 2:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((665, 155), rect_info["taille"]))
+        elif x == 1 and y == 3:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((420, 250), rect_info["taille"]))
+        elif x == 2 and y == 3:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((540, 250), rect_info["taille"]))
+        elif x == 3 and y == 3:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((665, 250), rect_info["taille"]))
+
+    elif joueur == "joueur_1":
+        if x == 1 and y == 1:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((420, 495), rect_info["taille"]))
+        elif x == 2 and y == 1:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((540, 495), rect_info["taille"]))
+        elif x == 3 and y == 1:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((665, 495), rect_info["taille"]))
+        elif x == 1 and y == 2:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((420, 587), rect_info["taille"]))
+        elif x == 2 and y == 2:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((560, 587), rect_info["taille"]))
+        elif x == 3 and y == 2:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((665, 587), rect_info["taille"]))
+        elif x == 1 and y == 3:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((420, 678), rect_info["taille"]))
+        elif x == 2 and y == 3:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((540, 678), rect_info["taille"]))
+        elif x == 3 and y == 3:
+            pygame.draw.rect(SCREEN, rect_info["couleur"], pygame.Rect((665, 678), rect_info["taille"]))
+
+    pygame.display.flip()
+
+def remove_de_plateau(joueur):
     """Fonction servant à supprimer un dé sur l'affichage du jeu"""
     
     if joueur == "joueur_1":
@@ -180,6 +234,8 @@ def remove_de(joueur):
         pygame.draw.rect(SCREEN, (31, 142, 77), (810,300,340,190), 0)
         for i in range(4):
             pygame.draw.rect(SCREEN, (139, 69, 19), (810-i,300-i,345,195), 3)
+
+    pygame.display.flip()
 
 def lancer_de(joueur):
     """Fonction servant à charger l'animation de lancé de dé"""
