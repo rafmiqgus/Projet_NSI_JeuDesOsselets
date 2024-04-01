@@ -1,8 +1,10 @@
 import pygame
+from pygame import mixer
 import random
 from button import Button
 
 pygame.init()
+mixer.init()
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 800
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -30,6 +32,12 @@ def follow_prompt():
 def init_main_menu():
     """Fonction servant à selectionner le mode de jeu"""
     
+    pygame.mixer.music.unload()    
+        
+    pygame.mixer.music.load("assets/Skyrim - Music & Ambience - Night.mp3")
+    mixer.music.set_volume(1)
+    pygame.mixer.music.play(-1)
+
     running = True
     while running:
         SCREEN.blit(pygame.image.load("assets/Background.png"), (0, 0))
@@ -70,27 +78,45 @@ def init_main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PVP_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
+                    pygame.mixer.music.fadeout(3000)
+                    pygame.mixer.music.unload()
                     return "pvp"
                 if BOT_TARAK_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
+                    pygame.mixer.music.fadeout(2000)
+                    pygame.time.delay(2000)
+                    pygame.mixer.music.unload()
                     return "tarak"
                 if BOT_DIANTHEA_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
+                    pygame.mixer.music.fadeout(2000)
+                    pygame.time.delay(2000)
+                    pygame.mixer.music.unload()
                     return "dianthea"
                 if BOT_PETER_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
+                    pygame.mixer.music.fadeout(2000)
+                    pygame.time.delay(2000)
+                    pygame.mixer.music.unload()
                     return "peter"
                 if BOT_CYNTHIA_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
+                    pygame.mixer.music.fadeout(2000)
+                    pygame.time.delay(2000)
+                    pygame.mixer.music.unload()
                     return "cynthia"
 
         pygame.display.update()
+
 
 def init_display(joueurs):
     """Fonction servant à initialiser l'affichage du jeu"""
     global rectangle_goblin, rectangle_guerrier
 
     joueur_1, joueur_2 = joueurs
+
+    pygame.mixer.music.load("assets/Skyrim - Music & Ambience - Taverns.mp3")
+    pygame.mixer.music
 
     SCREEN.fill((245, 245, 220))
 
