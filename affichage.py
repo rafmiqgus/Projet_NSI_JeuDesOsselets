@@ -10,9 +10,14 @@ SCREEN_HEIGHT = 800
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Jeu des Osselets")
 
-def get_font(taille): 
-    """Fonction servant à selectionner la police de caractères"""
-    return pygame.font.Font("assets/font.ttf", taille)
+class get_font():
+    def custom(taille): 
+        """Fonction servant à selectionner la police de caractères custom"""
+        return pygame.font.Font("assets/font.ttf", taille)
+    
+    def gabriola(taille):
+        """Fonction servant à selectionner la police de caractères gabriola"""
+        return pygame.font.SysFont("Gabriola", taille)
 
 def init_main_menu():
     """Fonction servant à selectionner le mode de jeu"""
@@ -32,29 +37,19 @@ def init_main_menu():
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        MENU_TEXT = get_font(70).render("Menu Principal", True, (245, 245, 220))
+        MENU_TEXT = get_font.custom(70).render("Menu Principal", True, (245, 245, 220))
         MENU_RECT = MENU_TEXT.get_rect(center=(600, 200))
         SCREEN.blit(MENU_TEXT, MENU_RECT)
 
-        PVP_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 380), text_input="PvP", font=get_font(40), base_color="White", hovering_color="Green")
-        PVP_BUTTON.changeColor(MENU_MOUSE_POS)
-        PVP_BUTTON.update(SCREEN)
+        PVP_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 380), text_input="PvP", font=get_font.custom(40), base_color="White", hovering_color="Green")
 
-        BOT_TARAK_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 460), text_input="Tarak", font=get_font(40), base_color="White", hovering_color="Green")
-        BOT_TARAK_BUTTON.changeColor(MENU_MOUSE_POS)
-        BOT_TARAK_BUTTON.update(SCREEN)
+        BOT_TARAK_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 460), text_input="Tarak", font=get_font.custom(40), base_color="White", hovering_color="Green")
 
-        BOT_DIANTHEA_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 540), text_input="Dianthea", font=get_font(40), base_color="White", hovering_color="Green")
-        BOT_DIANTHEA_BUTTON.changeColor(MENU_MOUSE_POS)
-        BOT_DIANTHEA_BUTTON.update(SCREEN)
+        BOT_DIANTHEA_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 540), text_input="Dianthea", font=get_font.custom(40), base_color="White", hovering_color="Green")
 
-        BOT_PETER_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 620), text_input="Peter", font=get_font(40), base_color="White", hovering_color="Green")
-        BOT_PETER_BUTTON.changeColor(MENU_MOUSE_POS)
-        BOT_PETER_BUTTON.update(SCREEN)
+        BOT_PETER_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 620), text_input="Peter", font=get_font.custom(40), base_color="White", hovering_color="Green")
 
-        BOT_CYNTHIA_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 700), text_input="Cynthia", font=get_font(40), base_color="White", hovering_color="Green")
-        BOT_CYNTHIA_BUTTON.changeColor(MENU_MOUSE_POS)
-        BOT_CYNTHIA_BUTTON.update(SCREEN)
+        BOT_CYNTHIA_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 700), text_input="Cynthia", font=get_font.custom(40), base_color="White", hovering_color="Green")
 
         for button in [PVP_BUTTON, BOT_TARAK_BUTTON, BOT_DIANTHEA_BUTTON, BOT_PETER_BUTTON, BOT_CYNTHIA_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
@@ -79,19 +74,19 @@ def init_main_menu():
                 if BOT_DIANTHEA_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
                     pygame.mixer.music.fadeout(2000)
-                    pygame.time.delay(2000)
+                    fade_out()
                     pygame.mixer.music.unload()
                     return "dianthea"
                 if BOT_PETER_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
                     pygame.mixer.music.fadeout(2000)
-                    pygame.time.delay(2000)
+                    fade_out()
                     pygame.mixer.music.unload()
                     return "peter"
                 if BOT_CYNTHIA_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
                     pygame.mixer.music.fadeout(2000)
-                    pygame.time.delay(2000)
+                    fade_out()
                     pygame.mixer.music.unload()
                     return "cynthia"
 
@@ -102,7 +97,7 @@ def follow_prompt():
 
     SCREEN.blit(pygame.image.load("assets/Background.png"), (0, 0))
 
-    FOLLOW_PROMPT_TEXT = get_font(70).render("Suivez le Prompt", True, "White")
+    FOLLOW_PROMPT_TEXT = get_font.custom(70).render("Suivez le Prompt", True, "White")
     FOLLOW_PROMPT_RECT = FOLLOW_PROMPT_TEXT.get_rect(center=(600, 400))
     SCREEN.blit(FOLLOW_PROMPT_TEXT, FOLLOW_PROMPT_RECT)
 
@@ -114,9 +109,13 @@ def follow_prompt():
 
 def fade_out():
     """Fonction servant à faire une transition de fond"""
-    for i in range(255):
-        pygame.time.wait(10)
-        SCREEN.set_alpha(i)
+    fade_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+    fade_surface.fill((0,0,0)) # Fill with black or any color you want to fade to
+    for alpha in range(0, 51):
+        fade_surface.set_alpha(alpha)
+        SCREEN.blit(fade_surface, (0,0))
+        pygame.display.update()
+        pygame.time.wait(60)
 
 def init_display(joueurs):
     """Fonction servant à initialiser l'affichage du jeu"""
@@ -164,6 +163,51 @@ def init_display(joueurs):
     SCREEN.blit(pygame.transform.scale_by(pygame.image.load("assets/carte.png"), 0.1), (1143.8, 743.2))
 
     pygame.display.update()
+
+def init_end_game(gagant, joueur_1, joueur_2):
+    """Fonction servant à afficher le menu de fin de partie"""
+
+    SCREEN.fill((245, 245, 220))
+
+    running = True
+    while running:
+
+        MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+        END_GAME_TEXT_BRAVO = get_font.custom(70).render(f"Bravo !", True, "Black")      
+        END_GAME_RECT_BRAVO = END_GAME_TEXT_BRAVO.get_rect(center=(600, 100))
+        SCREEN.blit(END_GAME_TEXT_BRAVO, END_GAME_RECT_BRAVO)
+
+        END_GAME_TEXT = get_font.custom(40).render(f"{gagant} a gagne !", True, "Black")
+        END_GAME_RECT = END_GAME_TEXT.get_rect(center=(600, 200))
+        SCREEN.blit(END_GAME_TEXT, END_GAME_RECT)
+
+        BACK_BUTTON = Button(image=pygame.image.load("assets/Rect.png"), pos=(600, 700), text_input="Retour", font=get_font.custom(40), base_color="White", hovering_color=(255, 51, 51))
+        BACK_BUTTON.changeColor(MENU_MOUSE_POS)
+        BACK_BUTTON.update(SCREEN)  
+
+        IMAGE_JOUEUR_1 = pygame.image.load("assets/goblin.png")
+        SCREEN.blit(pygame.transform.scale_by(IMAGE_JOUEUR_1, 0.4), (200, 320))
+
+        IMAGE_JOUEUR_2 = pygame.image.load("assets/guerrier.png")
+        SCREEN.blit(pygame.transform.scale_by(IMAGE_JOUEUR_2, 0.4), (800, 300))
+
+        nom_joueur_1 = get_font.gabriola(40).render(joueur_1, True, "black")
+        SCREEN.blit(nom_joueur_1, (100, 100))
+
+        nom_joueur_2 = get_font.render(joueur_2, True, "black")
+        SCREEN.blit(nom_joueur_2, (200, 200))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if BACK_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    running = False
+                    pygame.mixer.music.stop()
+                    mixer.music.unload()
+
+        pygame.display.update()
 
 class de():
 
@@ -404,3 +448,5 @@ def clear_grille(joueur):
         SCREEN.blit(pygame.image.load("assets/grid.png"), (420, 490))
 
     pygame.display.flip()
+
+    
