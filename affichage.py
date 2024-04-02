@@ -14,23 +14,11 @@ def get_font(taille):
     """Fonction servant à selectionner la police de caractères"""
     return pygame.font.Font("assets/font.ttf", taille)
 
-def follow_prompt():
-    """Fonction servant à afficher la page 'suivez le promp' """
-
-    SCREEN.blit(pygame.image.load("assets/Background.png"), (0, 0))
-
-    FOLLOW_PROMPT_TEXT = get_font(70).render("Suivez le Prompt", True, "White")
-    FOLLOW_PROMPT_RECT = FOLLOW_PROMPT_TEXT.get_rect(center=(600, 400))
-    SCREEN.blit(FOLLOW_PROMPT_TEXT, FOLLOW_PROMPT_RECT)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-
-    pygame.display.update()
-
 def init_main_menu():
     """Fonction servant à selectionner le mode de jeu"""
+
+    SCREEN.fill((0, 0, 0))
+    SCREEN.set_alpha(0)
     
     pygame.mixer.music.unload()    
         
@@ -79,12 +67,13 @@ def init_main_menu():
                 if PVP_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
                     pygame.mixer.music.fadeout(3000)
+                    fade_out()
                     pygame.mixer.music.unload()
                     return "pvp"
                 if BOT_TARAK_BUTTON.checkForInput(MENU_MOUSE_POS):
                     running = False 
                     pygame.mixer.music.fadeout(2000)
-                    pygame.time.delay(2000)
+                    fade_out()
                     pygame.mixer.music.unload()
                     return "tarak"
                 if BOT_DIANTHEA_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -108,6 +97,26 @@ def init_main_menu():
 
         pygame.display.update()
 
+def follow_prompt():
+    """Fonction servant à afficher la page 'suivez le promp' """
+
+    SCREEN.blit(pygame.image.load("assets/Background.png"), (0, 0))
+
+    FOLLOW_PROMPT_TEXT = get_font(70).render("Suivez le Prompt", True, "White")
+    FOLLOW_PROMPT_RECT = FOLLOW_PROMPT_TEXT.get_rect(center=(600, 400))
+    SCREEN.blit(FOLLOW_PROMPT_TEXT, FOLLOW_PROMPT_RECT)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+    pygame.display.update()
+
+def fade_out():
+    """Fonction servant à faire une transition de fond"""
+    for i in range(255):
+        pygame.time.wait(10)
+        SCREEN.set_alpha(i)
 
 def init_display(joueurs):
     """Fonction servant à initialiser l'affichage du jeu"""
@@ -115,8 +124,11 @@ def init_display(joueurs):
 
     joueur_1, joueur_2 = joueurs
 
+    pygame.mixer.music.unload()
+
     pygame.mixer.music.load("assets/Skyrim - Music & Ambience - Taverns.mp3")
-    pygame.mixer.music
+    pygame.mixer.music.set_volume(1)
+    pygame.mixer.music.play(-1)
 
     SCREEN.fill((245, 245, 220))
 
@@ -153,129 +165,142 @@ def init_display(joueurs):
 
     pygame.display.update()
 
-def add_de_grille(face_dé, x, y, joueur):
-    """Fonction servant à ajouter un dé sur l'affichage du jeu"""
+class de():
 
-    dé = "assets/dé_" + str(face_dé) + ".png"
-    
-    if joueur == "joueur_2":
-        if x == 1 and y == 1:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 65))
-        elif x == 2 and y == 1:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 65))
-        elif x == 3 and y == 1:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 65))
-        elif x == 1 and y == 2:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 155))
-        elif x == 2 and y == 2:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 155))
-        elif x == 3 and y == 2:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 155))
-        elif x == 1 and y == 3:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 250))
-        elif x == 2 and y == 3:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 250))
-        elif x == 3 and y == 3:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 250))
-    elif joueur == "joueur_1":
-        if x == 1 and y == 1:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 495))
-        elif x == 2 and y == 1:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 495))
-        elif x == 3 and y == 1:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 495))
-        elif x == 1 and y == 2:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 587))
-        elif x == 2 and y == 2:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 587))
-        elif x == 3 and y == 2:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 587))
-        elif x == 1 and y == 3:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 678))
-        elif x == 2 and y == 3:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 678))
-        elif x == 3 and y == 3:
-            SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 678))
-    
-    pygame.display.flip()
+    def add_grille(face_dé, x, y, joueur):
+        """Fonction servant à ajouter un dé sur l'affichage du jeu"""
 
-def remove_de_grille(x, y, joueur):
-    """Fonction servant à supprimer un dé sur l'affichage du jeu"""
-    
-    rect = {
-        'taille' : (75, 75),
-        'couleur' : (245, 245, 220)
-    }
+        dé = "assets/dé_" + str(face_dé) + ".png"
 
-    if joueur == "joueur_2":
-        if x == 1 and y == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 65), rect["taille"]))
-        elif x == 2 and y == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 65), rect["taille"]))
-        elif x == 3 and y == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 65), rect["taille"]))
-        elif x == 1 and y == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 155), rect["taille"]))
-        elif x == 2 and y == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 155), rect["taille"]))
-        elif x == 3 and y == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 155), rect["taille"]))
-        elif x == 1 and y == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 250), rect["taille"]))
-        elif x == 2 and y == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 250), rect["taille"]))
-        elif x == 3 and y == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 250), rect["taille"]))
+        if joueur == "joueur_2":
+            if x == 1 and y == 1:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 65))
+            elif x == 2 and y == 1:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 65))
+            elif x == 3 and y == 1:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 65))
+            elif x == 1 and y == 2:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 155))
+            elif x == 2 and y == 2:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 155))
+            elif x == 3 and y == 2:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 155))
+            elif x == 1 and y == 3:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 250))
+            elif x == 2 and y == 3:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 250))
+            elif x == 3 and y == 3:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 250))
+        elif joueur == "joueur_1":
+            if x == 1 and y == 1:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 495))
+            elif x == 2 and y == 1:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 495))
+            elif x == 3 and y == 1:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 495))
+            elif x == 1 and y == 2:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 587))
+            elif x == 2 and y == 2:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 587))
+            elif x == 3 and y == 2:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 587))
+            elif x == 1 and y == 3:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (435, 678))
+            elif x == 2 and y == 3:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (560, 678))
+            elif x == 3 and y == 3:
+                SCREEN.blit(pygame.transform.scale_by(pygame.image.load(dé), 0.15), (685, 678))
 
-    elif joueur == "joueur_1":
-        if x == 1 and y == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 495), rect["taille"]))
-        elif x == 2 and y == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 495), rect["taille"]))
-        elif x == 3 and y == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 495), rect["taille"]))
-        elif x == 1 and y == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 587), rect["taille"]))
-        elif x == 2 and y == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 587), rect["taille"]))
-        elif x == 3 and y == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 587), rect["taille"]))
-        elif x == 1 and y == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 678), rect["taille"]))
-        elif x == 2 and y == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 678), rect["taille"]))
-        elif x == 3 and y == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 678), rect["taille"]))
+        pygame.display.flip()
 
-    pygame.display.flip()
+    def remove_grille(x, y, joueur):
+        """Fonction servant à supprimer un dé sur l'affichage du jeu"""
 
-def remove_de_plateau(joueur):
-    """Fonction servant à supprimer un dé sur l'affichage du jeu"""
-    
-    if joueur == "joueur_1":
-        pygame.draw.rect(SCREEN, (31, 142, 77), (35,300,340,190), 0)
-        for i in range(4):
-            pygame.draw.rect(SCREEN, (139, 69, 19), (35-i,300-i,345,195), 3)
-    elif joueur == "joueur_2":
-        pygame.draw.rect(SCREEN, (31, 142, 77), (810,300,340,190), 0)
-        for i in range(4):
-            pygame.draw.rect(SCREEN, (139, 69, 19), (810-i,300-i,345,195), 3)
+        rect = {
+            'taille' : (75, 75),
+            'couleur' : (245, 245, 220)
+        }
 
-    pygame.display.flip()
+        if joueur == "joueur_2":
+            if x == 1 and y == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 65), rect["taille"]))
+            elif x == 2 and y == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 65), rect["taille"]))
+            elif x == 3 and y == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 65), rect["taille"]))
+            elif x == 1 and y == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 155), rect["taille"]))
+            elif x == 2 and y == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 155), rect["taille"]))
+            elif x == 3 and y == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 155), rect["taille"]))
+            elif x == 1 and y == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 250), rect["taille"]))
+            elif x == 2 and y == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 250), rect["taille"]))
+            elif x == 3 and y == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 250), rect["taille"]))
 
-def lancer_de(joueur):
-    """Fonction servant à charger l'animation de lancé de dé et qui retourne un chiffre entre 1 eet 6"""
+        elif joueur == "joueur_1":
+            if x == 1 and y == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 495), rect["taille"]))
+            elif x == 2 and y == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 495), rect["taille"]))
+            elif x == 3 and y == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 495), rect["taille"]))
+            elif x == 1 and y == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 587), rect["taille"]))
+            elif x == 2 and y == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 587), rect["taille"]))
+            elif x == 3 and y == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 587), rect["taille"]))
+            elif x == 1 and y == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((435, 678), rect["taille"]))
+            elif x == 2 and y == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((560, 678), rect["taille"]))
+            elif x == 3 and y == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((685, 678), rect["taille"]))
 
-    clock = pygame.time.Clock()
-    frames = [pygame.image.load(f"assets/dé_{i}.png") for i in [4, 2, 5, 1, 6, 3, 5, 1, 3, 5, 2, 6, 5, 2, 6, 2, 1, 3]]
-    frame = 0
+        pygame.display.flip()
 
-    for frame in range(len(frames)):
-        clock.tick(12)
-        if frame >= len(frames):
-            frame = 0
+    def remove_plateau(joueur):
+        """Fonction servant à supprimer un dé sur l'affichage du jeu"""
 
-        image = frames[frame]
+        if joueur == "joueur_1":
+            pygame.draw.rect(SCREEN, (31, 142, 77), (35,300,340,190), 0)
+            for i in range(4):
+                pygame.draw.rect(SCREEN, (139, 69, 19), (35-i,300-i,345,195), 3)
+        elif joueur == "joueur_2":
+            pygame.draw.rect(SCREEN, (31, 142, 77), (810,300,340,190), 0)
+            for i in range(4):
+                pygame.draw.rect(SCREEN, (139, 69, 19), (810-i,300-i,345,195), 3)
+
+        pygame.display.flip()
+
+    def lancer(joueur):
+        """Fonction servant à charger l'animation de lancé de dé et qui retourne un chiffre entre 1 eet 6"""
+
+        clock = pygame.time.Clock()
+        frames = [pygame.image.load(f"assets/dé_{i}.png") for i in [4, 2, 5, 1, 6, 3, 5, 1, 3, 5, 2, 6, 5, 2, 6, 2, 1, 3]]
+        frame = 0
+
+        for frame in range(len(frames)):
+            clock.tick(12)
+            if frame >= len(frames):
+                frame = 0
+
+            image = frames[frame]
+
+            if joueur == "joueur_1":
+                SCREEN.blit(pygame.transform.scale_by(image, 0.2), (153, 343))
+
+            elif joueur == "joueur_2":
+                SCREEN.blit(pygame.transform.scale_by(image, 0.2), (930, 340))
+
+            pygame.display.update()
+
+        face_random = random.randint(1, 6)
+        image = pygame.image.load(f"assets/dé_{face_random}.png")
 
         if joueur == "joueur_1":
             SCREEN.blit(pygame.transform.scale_by(image, 0.2), (153, 343))
@@ -285,19 +310,91 @@ def lancer_de(joueur):
 
         pygame.display.update()
 
-    face_random = random.randint(1, 6)
-    image = pygame.image.load(f"assets/dé_{face_random}.png")
-        
-    if joueur == "joueur_1":
-        SCREEN.blit(pygame.transform.scale_by(image, 0.2), (153, 343))
+        return face_random
 
-    elif joueur == "joueur_2":
-        SCREEN.blit(pygame.transform.scale_by(image, 0.2), (930, 340))
+class score():
 
-    pygame.display.update()
+    def add_colonne(score, joueur, x):
+        """Fonction servant à afficher le score d'une colonne d'un joueur"""
 
-    return face_random
-        
+        FONT = pygame.font.SysFont("Gabriola", 40)
+        score = FONT.render(f"{score}", True, "Black")
+
+        if joueur == "joueur_1":
+            if x == 1:
+                SCREEN.blit(score, (460, 440))
+            elif x == 2:
+                SCREEN.blit(score, (585, 440))
+            elif x == 3:
+                SCREEN.blit(score, (705, 440))
+
+        elif joueur == "joueur_2":
+            if x == 1:
+                SCREEN.blit(score, (460, 335))
+            elif x == 2:
+                SCREEN.blit(score, (585, 335))
+            elif x == 3:
+                SCREEN.blit(score, (705, 335))
+
+        pygame.display.flip()
+
+    def remove_colonne(joueur, x):
+        """Fonction servant à supprimer le score d'une colonne d'un joueur"""
+
+        rect = {
+            'taille' : (50, 50),
+            'couleur' : (245, 245, 220)
+        }
+
+        if joueur == "joueur_1":
+            if x == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((450, 440), rect["taille"]))
+            elif x == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((575, 440), rect["taille"]))
+            elif x == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((695, 440), rect["taille"]))
+
+        elif joueur == "joueur_2":
+            if x == 1:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((450, 335), rect["taille"]))
+            elif x == 2:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((575, 335), rect["taille"]))
+            elif x == 3:
+                pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((695, 335), rect["taille"]))
+
+        pygame.display.flip()
+
+    def add_total(score, joueur):
+        """fonction servant à afficher le score total d'un joueur"""
+
+        FONT = pygame.font.SysFont("Gabriola", 40)
+        score = FONT.render(f"{score}", True, "Black")
+
+        if joueur == "joueur_1":
+            score_width = score.get_width()
+            score_x = 370 - score_width
+            SCREEN.blit(score, (score_x, 505))
+
+        elif joueur == "joueur_2":
+            SCREEN.blit(score, (818, 255))
+
+        pygame.display.flip()
+
+    def remove_total(joueur):
+        """Fonction servant à supprimer le score d'une colonne d'un joueur"""
+
+        rect = {
+            'taille' : (70, 50),
+            'couleur' : (245, 245, 220)
+        }
+
+        if joueur == "joueur_1":
+            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((310, 505), rect["taille"]))
+        elif joueur == "joueur_2":
+            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((818, 255), rect["taille"]))
+
+        pygame.display.flip()
+
 def clear_grille(joueur):
     """Fonction servant à effacer tout les dés dans une grille donnée"""
 
@@ -305,86 +402,5 @@ def clear_grille(joueur):
         SCREEN.blit(pygame.image.load("assets/grid.png"), (420, 60))
     if joueur == "joueur_1":
         SCREEN.blit(pygame.image.load("assets/grid.png"), (420, 490))
-
-    pygame.display.flip()
-
-def add_score_colonne(score, joueur, x):
-    """Fonction servant à afficher le score d'une colonne d'un joueur"""
-
-    FONT = pygame.font.SysFont("Gabriola", 40)
-    score = FONT.render(f"{score}", True, "Black")
-
-    if joueur == "joueur_1":
-        if x == 1:
-            SCREEN.blit(score, (460, 440))
-        elif x == 2:
-            SCREEN.blit(score, (585, 440))
-        elif x == 3:
-            SCREEN.blit(score, (705, 440))
-
-    elif joueur == "joueur_2":
-        if x == 1:
-            SCREEN.blit(score, (460, 335))
-        elif x == 2:
-            SCREEN.blit(score, (585, 335))
-        elif x == 3:
-            SCREEN.blit(score, (705, 335))
-
-    pygame.display.flip()
-
-def remove_score_colonne(joueur, x):
-    """Fonction servant à supprimer le score d'une colonne d'un joueur"""
-
-    rect = {
-        'taille' : (50, 50),
-        'couleur' : (245, 245, 220)
-    }
-
-    if joueur == "joueur_1":
-        if x == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((450, 440), rect["taille"]))
-        elif x == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((575, 440), rect["taille"]))
-        elif x == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((695, 440), rect["taille"]))
-
-    elif joueur == "joueur_2":
-        if x == 1:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((450, 335), rect["taille"]))
-        elif x == 2:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((575, 335), rect["taille"]))
-        elif x == 3:
-            pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((695, 335), rect["taille"]))
-
-    pygame.display.flip()
-
-def add_score_total(score, joueur):
-    """fonction servant à afficher le score total d'un joueur"""
-
-    FONT = pygame.font.SysFont("Gabriola", 40)
-    score = FONT.render(f"{score}", True, "Black")
-
-    if joueur == "joueur_1":
-        score_width = score.get_width()
-        score_x = 370 - score_width
-        SCREEN.blit(score, (score_x, 505))
-
-    elif joueur == "joueur_2":
-        SCREEN.blit(score, (818, 255))
-
-    pygame.display.flip()
-
-def remove_score_total(joueur):
-    """Fonction servant à supprimer le score d'une colonne d'un joueur"""
-
-    rect = {
-        'taille' : (70, 50),
-        'couleur' : (245, 245, 220)
-    }
-
-    if joueur == "joueur_1":
-        pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((310, 505), rect["taille"]))
-    elif joueur == "joueur_2":
-        pygame.draw.rect(SCREEN, rect["couleur"], pygame.Rect((818, 255), rect["taille"]))
 
     pygame.display.flip()
