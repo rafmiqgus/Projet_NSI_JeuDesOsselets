@@ -164,7 +164,7 @@ def init_display(joueurs):
 
     pygame.display.update()
 
-def init_end_game(gagant, joueur_1, joueur_2):
+def init_end_game(gagant, nom_joueur_1, nom_joueur_2, score_joueur_1, score_joueur_2):
     """Fonction servant à afficher le menu de fin de partie"""
 
     SCREEN.fill((245, 245, 220))
@@ -174,11 +174,11 @@ def init_end_game(gagant, joueur_1, joueur_2):
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
-        END_GAME_TEXT_BRAVO = get_font.custom(70).render(f"Bravo !", True, "Black")      
+        END_GAME_TEXT_BRAVO = get_font.custom(70).render(f"Bravo !", True, (171, 9, 9))      
         END_GAME_RECT_BRAVO = END_GAME_TEXT_BRAVO.get_rect(center=(600, 100))
         SCREEN.blit(END_GAME_TEXT_BRAVO, END_GAME_RECT_BRAVO)
 
-        END_GAME_TEXT = get_font.custom(40).render(f"{gagant} a gagne !", True, "Black")
+        END_GAME_TEXT = get_font.custom(40).render(f"{gagant} a gagné(e) !", True, "Black")
         END_GAME_RECT = END_GAME_TEXT.get_rect(center=(600, 200))
         SCREEN.blit(END_GAME_TEXT, END_GAME_RECT)
 
@@ -187,16 +187,26 @@ def init_end_game(gagant, joueur_1, joueur_2):
         BACK_BUTTON.update(SCREEN)  
 
         IMAGE_JOUEUR_1 = pygame.image.load("assets/goblin.png")
-        SCREEN.blit(pygame.transform.scale_by(IMAGE_JOUEUR_1, 0.4), (200, 320))
+        SCREEN.blit(pygame.transform.scale_by(IMAGE_JOUEUR_1, 0.4), (200, 340))
 
         IMAGE_JOUEUR_2 = pygame.image.load("assets/guerrier.png")
-        SCREEN.blit(pygame.transform.scale_by(IMAGE_JOUEUR_2, 0.4), (800, 300))
+        SCREEN.blit(pygame.transform.scale_by(IMAGE_JOUEUR_2, 0.4), (800, 320))
 
-        nom_joueur_1 = get_font.gabriola(40).render(joueur_1, True, "black")
-        SCREEN.blit(nom_joueur_1, (100, 100))
+        Nom_joueur_1 = get_font.gabriola(40).render(nom_joueur_1, True, (171, 9, 9))
+        Nom_joueur_1_rect = Nom_joueur_1.get_rect(center=(300, 335))
+        SCREEN.blit(Nom_joueur_1, Nom_joueur_1_rect)
 
-        nom_joueur_2 = get_font.render(joueur_2, True, "black")
-        SCREEN.blit(nom_joueur_2, (200, 200))
+        Nom_joueur_2 = get_font.gabriola(40).render(nom_joueur_2, True, (171, 9, 9))
+        Nom_joueur_2_rect = Nom_joueur_2.get_rect(center=(900, 310))
+        SCREEN.blit(Nom_joueur_2, Nom_joueur_2_rect)
+
+        Score_joueur_1 = get_font.gabriola(40).render(f"{score_joueur_1}", True, "black")
+        Score_joueur_1_rect = Score_joueur_1.get_rect(center=(300, 540))
+        SCREEN.blit(Score_joueur_1, Score_joueur_1_rect)
+
+        Score_joueur_2 = get_font.gabriola(40).render(f"{score_joueur_2}", True, "black")
+        Score_joueur_2_rect = Score_joueur_2.get_rect(center=(900, 540))
+        SCREEN.blit(Score_joueur_2, Score_joueur_2_rect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

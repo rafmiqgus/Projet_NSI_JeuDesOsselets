@@ -22,7 +22,7 @@ while running:
 
     pygame.time.delay(2000)
 
-    init_end_game("joueur_1", "joueur_1", choix)
+    init_end_game("joueur_1", "joueur_1", choix, 28, 37)
 
     pygame.display.flip()
 
