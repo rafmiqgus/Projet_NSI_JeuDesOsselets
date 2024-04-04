@@ -118,10 +118,11 @@ def sumdes(des):
                 sum = occ[1]*4 + occ[0]
         else:
             sum = k[0] + k[1] + k[2]
-        result.append(sum)
-        
-    
+        result.append(sum) 
     return result
+
+def sumdestotal(j1):
+    return sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]
 
 def verifplacement():
     placement = input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?")
@@ -159,20 +160,16 @@ def duel():
             win = True
         affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
     print("Jeu terminé.")
-    somme1 = sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]  
-    somme2 = sumdes(j2)[0] + sumdes(j2)[1] + sumdes(j2)[2]  
+    somme1 = sumdestotal(j1)
+    somme2 = sumdestotal(j2) 
     print("Score final de ",p[0]," : ", somme1)
     print("Score final de ",p[1]," : ", somme2)
         
-    
-
-
-
 def dianthea():
     j1 = [[0,0,0],[0,0,0],[0,0,0]]
     bot = [[0,0,0],[0,0,0],[0,0,0]]
     win = False
-    print("Bienvenue ! Vous avez choisi le mode duel contre le bot dianthéa.")
+    print("Bienvenue ! Vous avez choisi le mode duel contre le bot Dianthéa.")
     nom = input("Quel est votre nom ? ")
     p = (nom,"Dianthéa")
     while not win : 
@@ -199,8 +196,8 @@ def dianthea():
             win = True
         affichage(p,0,roll,j1,bot,sumdes(j1),sumdes(bot))
     print("Jeu terminé.")
-    somme1 = sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]  
-    somme2 = sumdes(bot)[0] + sumdes(bot)[1] + sumdes(bot)[2]  
+    somme1 = sumdestotal(j1)
+    somme2 = sumdestotal(bot) 
     print("Score final de ",p[0]," : ", somme1)
     print("Score final de ",p[1]," : ", somme2)
 
@@ -211,30 +208,24 @@ def choixdianthea(j1,bot,roll):
     col = 0 
     if precheck(bot,j1,1,roll):
         a = sumdes(j1)[0]
-        print(a)
         enleverdes(j1,0 ,roll)
         b = sumdes(j1)[0]
-        print(a,b)
         temp = a - b
         if temp >= n:
             n = temp
             col = 1
     if precheck(bot,j1,2,roll):
         a = sumdes(j1)[1]
-        print(a)
         enleverdes(j1,1,roll)
         b = sumdes(j1)[1]
-        print(a,b)
         temp = a - b
         if temp >= n:
             n = temp
             col = 2
     if precheck(bot,j1,3,roll):
         a = sumdes(j1)[2]
-        print(a)
         enleverdes(j1,2,roll)
         b = sumdes(j1)[2]
-        print(a,b)
         temp = a - b
         if temp >= n:
             n = temp
@@ -257,13 +248,13 @@ def bot_tarak():
     j2 = [[0,0,0],[0,0,0],[0,0,0]]
     win = False
     print("Bienvenue ! Vous avez choisi le mode bot Tarak.")
-    a = input("Entrez votre nom!")
+    a = input("Quel est votre nom?")
     p = (a,"Tarak")
     while not win :
         print("Au tour de" ,p[0], " .")
         roll = de()
         print("Vous avez eu un " , roll, " .")
-        placement = int(input("Ou voulez vous placer le dé , Colonne 1,2, ou 3?"))
+        placement = verifplacement()
         a = placementj1(j1,j2,placement,roll)
         j1 = a[0]
         j2 = a[1]
@@ -283,9 +274,79 @@ def bot_tarak():
             win = True
         affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
     print("Jeu terminé.")
-    somme1 = sumdes(j1)[0] + sumdes(j1)[1] + sumdes(j1)[2]
-    somme2 = sumdes(j2)[0] + sumdes(j2)[1] + sumdes(j2)[2]
+    somme1 = sumdestotal(j1)
+    somme2 = sumdestotal(j2) 
     print("Score final de ",p[0]," : ", somme1)
-    print("Score final de bot tarak : ", somme2)
+    print("Score final de Tarak : ", somme2)
 
-bot_tarak()
+def peter():
+    j1 = [[0,0,0],[0,0,0],[0,0,0]]
+    bot = [[0,0,0],[0,0,0],[0,0,0]]
+    win = False
+    print("Bienvenue ! Vous avez choisi le mode duel contre le bot Peter.")
+    nom = input("Quel est votre nom ? ")
+    p = (nom,"Peter")
+    while not win : 
+        print("Au tour de" ,p[0], " .")
+        roll = de()
+        print("Vous avez eu un " , roll, " .")
+        placement = verifplacement()
+        a = placementj1(j1,bot,placement,roll)
+        j1 = a[0]
+        bot = a[1]
+        if checkover(j1,bot):
+            win = True
+        affichage(p,roll,0,j1,bot,sumdes(j1),sumdes(bot))
+        print("Au tour de Peter.")   
+        roll = de()
+        time.sleep(1)
+        print("Peter a obtenu un ", roll, " .")
+        time.sleep(1)
+        placement = choixpeter(bot,j1,roll)
+        a = placementj1(bot,j1,placement,roll)
+        bot = a[0]
+        j1 = a[1]
+        if checkover(bot,j1):
+            win = True
+        affichage(p,0,roll,j1,bot,sumdes(j1),sumdes(bot))
+    print("Jeu terminé.")
+    somme1 = sumdestotal(j1)
+    somme2 = sumdestotal(bot) 
+    print("Score final de ",p[0]," : ", somme1)
+    print("Score final de ",p[1]," : ", somme2)
+
+def choixpeter(bot,j2,roll):
+    temp = bot
+    a = 0
+    col = random.randint(1,3)
+    max = 0
+    t1 = sumdestotal(bot)
+
+    if bot[0][2] == 0:
+        a = sumdestotal([[bot[0][0],bot[0][1],roll],bot[1],bot[2]]) - t1 - roll
+        if  a> max:
+            max = a
+            col = 1
+                
+    if bot[1][2] == 0:
+        a = sumdestotal([bot[0],[bot[1][0],bot[1][1],roll],bot[2]]) - t1 - roll
+
+        if a > max:
+            max = a
+            col = 2
+                
+    if bot[2][2] == 0:
+        a = sumdestotal([bot[0],bot[1],[bot[2][0],bot[2][1],roll]]) - t1 - roll
+        if a > max:
+            max = a
+            col = 3
+    while bot[col-1][2] != 0:
+        col = random.randint(1,3)
+    
+    return col
+
+
+               
+
+peter()
+
