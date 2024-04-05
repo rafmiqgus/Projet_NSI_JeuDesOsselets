@@ -1,35 +1,19 @@
 import random, time
-def de():
+from assets.affichage import *
+import pygame
+
+def lancerde():
     return random.randint(1,6)
 
-def affichage(p,de1,de2,j1,j2,s1,s2):
-    tempa = (8 - len(p[0]) )* " "
-    tempb = (8 - len(p[1]) )* " "
-    t1 = s1[0]+s1[1]+s1[2]
-    te1 = (3 - len(str(t1))) * " "
-    se1 = (3 - len(str(s1))) * " "
-    t2 = s2[0]+s2[1]+s2[2]
-    te2 = (3- len(str(t2))) * " "
-    se2 = (3 - len(str(s2))) * " "
-    print("__________________________________________________________________________________________")
-    print("|                                                                                        |")
-    print("|  ",p[0],tempa,"                         |",j1[0][2],"||",j1[1][2],"||",j1[2][2],"|               ",de1,"                 |")
-    print("|   score :                              ‾    ‾    ‾                                     |")
-    print("|    ",t1,te1,"                            |",j1[0][1],"||",j1[1][1],"||",j1[2][1],"|                                   |")
-    print("|                                        ‾    ‾    ‾                                     |")
-    print("|                                      |",j1[0][0],"||",j1[1][0],"||",j1[2][0],"|                                   |")
-    print("|                                        ‾    ‾    ‾                                     |")
-    print("|                                       ",s1[0],"  ",s1[1],"  ",s1[2],"                                    |")
-    print("|                                                                                        |")
-    print("|                                                                                        |")
-    print("|  ",p[1],tempb,"                         |",j2[0][2],"||",j2[1][2],"||",j2[2][2],"|               ",de2,"                 |")
-    print("|   score :                              ‾    ‾    ‾                                     |")
-    print("|    ",t2,te2,"                            |",j2[0][1],"||",j2[1][1],"||",j2[2][1],"|                                   |")
-    print("|                                        ‾    ‾    ‾                                     |")
-    print("|                                      |",j2[0][0],"||",j2[1][0],"||",j2[2][0],"|                                   |")
-    print("|                                        ‾    ‾    ‾                                     |")
-    print("|                                       ",s2[0],"  ",s2[1],"  ",s2[2],"                                    |")
-    print("|________________________________________________________________________________________|")
+def add_list(list,joueur):
+    for i in list:
+        x = 1
+        for k in i:
+            y = 1
+            de.add_grille(k,x,y,joueur)
+            y += 1
+        x += 1
+
 def choixnom():
     a = str(input("Nom du joueur 1?"))
     b = str(input("Nom du joueur 2?"))
@@ -40,17 +24,20 @@ def choixnom():
         print("Non valide, 8 lettres max")
         b = str(input("j1"))
     return (a,b)
+
+def precheck(j1,j2,colonne,roll):
+    a = False
+    if roll in j2[colonne-1] and j1[colonne-1][2] == 0:
+        a = True 
+    return a 
+
 def check(desj1,desj2,colonne):
     a = False
     for k in desj1[colonne-1]:
         if k in desj2[colonne-1] and k != 0:
             a = True 
     return a 
-def precheck(j1,j2,colonne,roll):
-    a = False
-    if roll in j2[colonne-1] and j1[colonne-1][2] == 0:
-        a = True 
-    return a 
+
 def enleverdes(j2,placement,roll):
     nt = []
     for i in j2[placement-1]:
@@ -60,6 +47,7 @@ def enleverdes(j2,placement,roll):
         nt.append(0)
     j2[placement-1] = nt
     return j2
+
 def placementj1(j1,j2,placement,roll):
     while j1[placement-1][2] != 0:
         print("colonne remplie ! choisissez en une autre.")
@@ -131,6 +119,43 @@ def verifplacement():
         placement = input("Quelle colonne voulez vous choisir ?")
     return int(placement)
 
+def calcplus(ap,av,roll):
+    return ap - av - roll
+
+def choixpeter(bot,roll):
+    temp = bot
+    a = 0
+    col = random.randint(1,3)
+    max = 0
+    t1 = sumdestotal(bot)
+
+    if bot[0][2] == 0:
+        a = calcplus(sumdestotal([[bot[0][0],bot[0][1],roll],bot[1],bot[2]]),t1,roll)
+        if  a> max:
+            max = a
+            col = 1
+                
+    if bot[1][2] == 0:
+        a = calcplus(sumdestotal([bot[0],[bot[1][0],bot[1][1],roll],bot[2]]),t1,roll)
+        if a > max:
+            max = a
+            col = 2
+                
+    if bot[2][2] == 0:
+        a  = calcplus(sumdestotal([bot[0],bot[1],[bot[2][0],bot[2][1],roll]]),t1,roll)
+        if a > max:
+            max = a
+            col = 3
+    while bot[col-1][2] != 0:
+        col = random.randint(1,3)
+    
+    return (col,max)
+
+def verif_rempli(j1):
+    a = random.randint(1,3)
+    while j1[a-1][2] != 0:
+        a = random.randint(1,3)
+    return a
 
 def duel():
     j1 = [[0,0,0],[0,0,0],[0,0,0]]
@@ -138,9 +163,17 @@ def duel():
     win = False
     print("Bienvenue ! Vous avez choisi le mode duel (1 contre 1).")
     p = choixnom()
-    while not win : 
+    init_display(p)
+
+    running = True
+    while running :
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT :
+                running = False
+                pygame.quit()
+
         print("Au tour de" ,p[0], " .")
-        roll = de()
+        roll = lancerde()
         print("Vous avez eu un " , roll, " .")
         placement = verifplacement()
         a = placementj1(j1,j2,placement,roll)
@@ -148,9 +181,10 @@ def duel():
         j2 = a[1]
         if checkover(j1,j2):
             win = True
-        affichage(p,roll,0,j1,j2,sumdes(j1),sumdes(j2))
+        clear_grille("joueur_1")
+        add_list(j1,"joueur_1")
         print("Au tour de" ,p[1], " .")
-        roll = de()
+        roll = lancerde()
         print("Vous avez eu un " , roll, " .")
         placement = verifplacement()
         a = placementj1(j2,j1,placement,roll)
@@ -158,13 +192,54 @@ def duel():
         j1 = a[1]
         if checkover(j2,j1):
             win = True
-        affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
+        clear_grille("joueur_2")
+        add_list(j2,"joueur_2")
+
     print("Jeu terminé.")
     somme1 = sumdestotal(j1)
     somme2 = sumdestotal(j2) 
     print("Score final de ",p[0]," : ", somme1)
     print("Score final de ",p[1]," : ", somme2)
+
+def tarak():
+    j1 = [[0,0,0],[0,0,0],[0,0,0]]
+    j2 = [[0,0,0],[0,0,0],[0,0,0]]
+    win = False
+    print("Bienvenue ! Vous avez choisi le mode contre le bot Tarak.")
+    a = input("Quel est votre nom?")
+    p = (a,"Tarak")
+    while not win :
+        print("Au tour de" ,p[0], " .")
+        roll = lancerde()
+        print("Vous avez eu un " , roll, " .")
+        placement = verifplacement()
+        a = placementj1(j1,j2,placement,roll)
+        j1 = a[0]
+        j2 = a[1]
+        if checkover(j1,j2):
+            win = True
         
+        print("Au tour de Tarak .")
+        clear_grille("joueur_1")
+        add_list(j1,"joueur_1")
+        time.sleep(1)
+        roll = lancerde()
+        print("Bot tarak a eu un " , roll, " .")
+        time.sleep(1)
+        placement = verif_rempli(j1)
+        a = placementj1(j2,j1,placement,roll)
+        j2 = a[0]
+        j1 = a[1]
+        if checkover(j2,j1):
+            win = True
+        clear_grille("joueur_2")
+        add_list(j2,"joueur_2")
+    print("Jeu terminé.")
+    somme1 = sumdestotal(j1)
+    somme2 = sumdestotal(j2) 
+    print("Score final de ",p[0]," : ", somme1)
+    print("Score final de Tarak : ", somme2)
+
 def dianthea():
     j1 = [[0,0,0],[0,0,0],[0,0,0]]
     bot = [[0,0,0],[0,0,0],[0,0,0]]
@@ -174,7 +249,7 @@ def dianthea():
     p = (nom,"Dianthéa")
     while not win : 
         print("Au tour de" ,p[0], " .")
-        roll = de()
+        roll = lancerde()
         print("Vous avez eu un " , roll, " .")
         placement = verifplacement()
         a = placementj1(j1,bot,placement,roll)
@@ -182,25 +257,26 @@ def dianthea():
         bot = a[1]
         if checkover(j1,bot):
             win = True
-        affichage(p,roll,0,j1,bot,sumdes(j1),sumdes(bot))
+        clear_grille("joueur_1")
+        add_list(j1,"joueur_1")
         print("Au tour de Dianthéa.")   
-        roll = de()
+        roll = lancerde()
         time.sleep(1)
         print("Dianthéa a obtenu un ", roll, " .")
         time.sleep(1)
-        placement = choixdianthea(j1,bot,roll)
+        placement = choixdianthea(j1,bot,roll)[0]
         a = placementj1(bot,j1,placement,roll)
         bot = a[0]
         j1 = a[1]
         if checkover(bot,j1):
             win = True
-        affichage(p,0,roll,j1,bot,sumdes(j1),sumdes(bot))
+        clear_grille("joueur_2")
+        add_list(bot,"joueur_2")
     print("Jeu terminé.")
     somme1 = sumdestotal(j1)
     somme2 = sumdestotal(bot) 
     print("Score final de ",p[0]," : ", somme1)
     print("Score final de ",p[1]," : ", somme2)
-
 
 def choixdianthea(j1,bot,roll):
     temp = 0
@@ -208,7 +284,7 @@ def choixdianthea(j1,bot,roll):
     col = 0 
     if precheck(bot,j1,1,roll):
         a = sumdes(j1)[0]
-        enleverdes(j1,0 ,roll)
+        enleverdes(j1,0,roll)
         b = sumdes(j1)[0]
         temp = a - b
         if temp >= n:
@@ -235,49 +311,7 @@ def choixdianthea(j1,bot,roll):
         col = random.randint(1,3)
         while bot[col-1][2] != 0:
             col = random.randint(1,3)
-    return col
-    
-def verif_rempli(j1):
-    a = random.randint(1,3)
-    while j1[a-1][2] != 0:
-        a = random.randint(1,3)
-    return a
-
-def bot_tarak():
-    j1 = [[0,0,0],[0,0,0],[0,0,0]]
-    j2 = [[0,0,0],[0,0,0],[0,0,0]]
-    win = False
-    print("Bienvenue ! Vous avez choisi le mode bot Tarak.")
-    a = input("Quel est votre nom?")
-    p = (a,"Tarak")
-    while not win :
-        print("Au tour de" ,p[0], " .")
-        roll = de()
-        print("Vous avez eu un " , roll, " .")
-        placement = verifplacement()
-        a = placementj1(j1,j2,placement,roll)
-        j1 = a[0]
-        j2 = a[1]
-        if checkover(j1,j2):
-            win = True
-        affichage(p,roll,0,j1,j2,sumdes(j1),sumdes(j2))
-        print("Au tour du bot tarak .")
-        time.sleep(1)
-        roll = de()
-        print("Bot tarak a eu un " , roll, " .")
-        time.sleep(1)
-        placement = verif_rempli(j1)
-        a = placementj1(j2,j1,placement,roll)
-        j2 = a[0]
-        j1 = a[1]
-        if checkover(j2,j1):
-            win = True
-        affichage(p,0,roll,j1,j2,sumdes(j1),sumdes(j2))
-    print("Jeu terminé.")
-    somme1 = sumdestotal(j1)
-    somme2 = sumdestotal(j2) 
-    print("Score final de ",p[0]," : ", somme1)
-    print("Score final de Tarak : ", somme2)
+    return (col,n)
 
 def peter():
     j1 = [[0,0,0],[0,0,0],[0,0,0]]
@@ -288,7 +322,7 @@ def peter():
     p = (nom,"Peter")
     while not win : 
         print("Au tour de" ,p[0], " .")
-        roll = de()
+        roll = lancerde()
         print("Vous avez eu un " , roll, " .")
         placement = verifplacement()
         a = placementj1(j1,bot,placement,roll)
@@ -296,57 +330,104 @@ def peter():
         bot = a[1]
         if checkover(j1,bot):
             win = True
-        affichage(p,roll,0,j1,bot,sumdes(j1),sumdes(bot))
+        clear_grille("joueur_1")
+        add_list(j1,"joueur_1")
         print("Au tour de Peter.")   
-        roll = de()
+        roll = lancerde()
         time.sleep(1)
         print("Peter a obtenu un ", roll, " .")
         time.sleep(1)
-        placement = choixpeter(bot,j1,roll)
+        placement = choixpeter(bot,roll)[0]
         a = placementj1(bot,j1,placement,roll)
         bot = a[0]
         j1 = a[1]
         if checkover(bot,j1):
             win = True
-        affichage(p,0,roll,j1,bot,sumdes(j1),sumdes(bot))
+        clear_grille("joueur_2")
+        add_list(bot,"joueur_2")
     print("Jeu terminé.")
     somme1 = sumdestotal(j1)
     somme2 = sumdestotal(bot) 
     print("Score final de ",p[0]," : ", somme1)
     print("Score final de ",p[1]," : ", somme2)
 
-def choixpeter(bot,j2,roll):
-    temp = bot
-    a = 0
+def cynthia():
+    j1 = [[0,0,0],[0,0,0],[0,0,0]]
+    bot = [[0,0,0],[0,0,0],[0,0,0]]
+    win = False
+    print("Bienvenue ! Vous avez choisi le mode duel contre le bot Cynthia.")
+    nom = input("Quel est votre nom ? ")
+    p = (nom,"Cynthia")
+    while not win : 
+        print("Au tour de" ,p[0], " .")
+        roll = lancerde()
+        print("Vous avez eu un " , roll, " .")
+        placement = verifplacement()
+        a = placementj1(j1,bot,placement,roll)
+        j1 = a[0]
+        bot = a[1]
+        if checkover(j1,bot):
+            win = True
+        clear_grille("joueur_1")
+        add_list(j1,"joueur_1")
+        print("Au tour de Cynthia.")   
+        roll = lancerde()
+        time.sleep(1)
+        print("Cynthia a obtenu un ", roll, " .")
+        time.sleep(1)
+        placement = choixcynthia(bot,j1,roll)
+        a = placementj1(bot,j1,placement,roll)
+        bot = a[0]
+        j1 = a[1]
+        if checkover(bot,j1):
+            win = True
+        
+        clear_grille("joueur_2")
+        add_list(bot,"joueur_2")
+    print("Jeu terminé.")
+    somme1 = sumdestotal(j1)
+    somme2 = sumdestotal(bot) 
+    print("Score final de ",p[0]," : ", somme1)
+    print("Score final de ",p[1]," : ", somme2)
+
+def choixcynthia(bot,j2,roll):
+    a = choixdianthea(j2,bot,roll)
+    b = choixpeter(bot,roll)
     col = random.randint(1,3)
-    max = 0
-    t1 = sumdestotal(bot)
+    if a[1] >= b[1]:
+        col = a[0]
+    elif b[1] > a[1]:
+        col = b[0]
+    else:
+        print("t")
+    return col   
 
-    if bot[0][2] == 0:
-        a = sumdestotal([[bot[0][0],bot[0][1],roll],bot[1],bot[2]]) - t1 - roll
-        if  a> max:
-            max = a
-            col = 1
-                
-    if bot[1][2] == 0:
-        a = sumdestotal([bot[0],[bot[1][0],bot[1][1],roll],bot[2]]) - t1 - roll
+running = True
+clock = pygame.time.Clock()
 
-        if a > max:
-            max = a
-            col = 2
-                
-    if bot[2][2] == 0:
-        a = sumdestotal([bot[0],bot[1],[bot[2][0],bot[2][1],roll]]) - t1 - roll
-        if a > max:
-            max = a
-            col = 3
-    while bot[col-1][2] != 0:
-        col = random.randint(1,3)
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
     
-    return col
 
+    choix = init_main_menu()
+    follow_prompt()
 
-               
+    if choix == "pvp":
+        duel()
+    elif choix == "tarak":
+        tarak()
+    elif choix == "dianthea":
+        dianthea()
+    elif choix == "peter":
+        peter()
+    elif choix == "cynthia":
+        cynthia()
+    
+    init_end_game()
 
-peter()
-
+    pygame.display.flip()
+    clock.tick(60)
+  
+pygame.quit()

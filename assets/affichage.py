@@ -1,7 +1,7 @@
 import pygame
 from pygame import mixer
 import random
-from button import Button
+from assets.button import Button
 
 pygame.init()
 mixer.init()
@@ -220,7 +220,6 @@ def init_end_game(gagant, nom_joueur_1, nom_joueur_2, score_joueur_1, score_joue
         pygame.display.update()
 
 class de():
-
     def add_grille(face_dé, x, y, joueur):
         """Fonction servant à ajouter un dé sur l'affichage du jeu"""
 
@@ -458,5 +457,3 @@ def clear_grille(joueur):
         SCREEN.blit(pygame.image.load("assets/grid.png"), (420, 490))
 
     pygame.display.flip()
-
-    
